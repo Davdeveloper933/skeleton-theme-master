@@ -1,0 +1,31 @@
+{
+  "name": "skeleton-theme-master",
+  "version": "1.0.0",
+  "description": "1. Create a test store +\r 2. Install the theme in a store (just an empty skeleton of the theme, and work in it)+\r 3. Deploy the project locally using the Theme Kit +\r 4. Create several products for development and testing (you can import this CSV file) +\r 5. Make header and product section (layout):\r - all components are custom (you can follow the example of other themes, but not copy-paste)\r - you need to use liquid, language variables, and a theme customizer to fill the content (there should be no static, everything changes dynamically either through the customizer or through the product admin panel)\r - the ability to customize the navigation header through the navigation section in the admin panel\r - adaptability (mobile, tablet, desktop)\r - technologies: theme kit, BEM, scss, webpack or gulp\r - commit everything in git, each ready-made functionality is a separate commit, upload the result to your Github\r 6. Make an ajax cart (without using apps) (layout, example)\r - the ability to change the quantity and remove items from a basket\r 7. Provide a link to GitHub, a link to the store with access to the admin panel",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Davdeveloper933/skeleton-theme-master.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Davdeveloper933/skeleton-theme-master/issues"
+  },
+  "homepage": "https://github.com/Davdeveloper933/skeleton-theme-master#readme",
+  "devDependencies": {
+    "css-loader": "^5.2.6",
+    "eslint": "^7.30.0",
+    "mini-css-extract-plugin": "^2.0.0",
+    "node-sass": "^6.0.1",
+    "sass-loader": "^12.1.0",
+    "webpack": "^5.42.0",
+    "webpack-cli": "^4.7.2"
+  }
+}
