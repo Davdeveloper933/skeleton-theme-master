@@ -2,14 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="744733da-61b5-4f19-a2a2-9709bc35f9c8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/scss/theme.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/cart_item_img1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/cart_item_img2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/cart_item_img3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/intro-bg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/product_page_img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/product_thumbnail1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/product_thumbnail2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/product_thumbnail3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/theme.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sections/mobile-menu.liquid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snippets/cart-icon.liquid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snippets/menu-opened-icon.liquid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snippets/mobile-menu-icon.liquid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snippets/mobile-search-icon.liquid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snippets/search-icon.liquid" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/theme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/settings_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/settings_schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings_schema.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/layout/theme.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/layout/theme.liquid" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scss/theme.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/theme.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/gift_card.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/gift_card.liquid" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/index.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.liquid" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/search.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/search.liquid" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,17 +57,17 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/dist" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="Settings.Markdown" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\istom\Desktop\skeleton-theme-master\assets" />
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master\dist" />
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master" />
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master\assets\scss" />
-      <recent name="C:\Users\istom\Desktop\skeleton-theme-master\assets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master\assets" />
@@ -76,7 +94,10 @@
       <workItem from="1625337543637" duration="685000" />
       <workItem from="1625341454824" duration="10794000" />
       <workItem from="1625352558664" duration="3829000" />
-      <workItem from="1625381233818" duration="5552000" />
+      <workItem from="1625381233818" duration="13133000" />
+      <workItem from="1625487862110" duration="28146000" />
+      <workItem from="1625556446381" duration="400000" />
+      <workItem from="1625559404658" duration="4830000" />
     </task>
     <servers />
   </component>

@@ -13,3 +13,5 @@
 6. Make an ajax cart (without using apps) (layout, example)
 - the ability to change the quantity and remove items from a basket
 7. Provide a link to GitHub, a link to the store with access to the admin panel
+
+theme get --password=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 --store="my-store444444.myshopify.com" --themeid=124559720619          

@@ -1,5 +1,18 @@
 {
-  "current": "Default",
+  "current": {
+    "heading_font": "Roboto",
+    "body_font": "Lato",
+    "type_header_font": "muli_n6",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "heading_font": "sans-serif"
+        }
+      }
+    },
+    "content_for_index": []
+  },
   "presets": {
     "Default": {}
   }

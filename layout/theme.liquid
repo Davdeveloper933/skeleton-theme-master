@@ -11,13 +11,21 @@
   <link rel="canonical" href="{{ canonical_url }}">
   <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
   <title>{{ shop.name }}</title>
-
+  {%- if canonical_url != blank  -%}
+    <link rel="canonical" href="{{ canonical_url }}">
+  {%- endif -%}
   <meta name="description" content="">
 
   {{ content_for_header }}
+<style>
+  {{ settings.heading_font | font_face }}
+</style>
+  {% assign menu = linklists.header-menu %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
   {{ content_for_layout }}
+  <script src="{{ 'theme.js' | asset_url }}"></script>
 </body>
 </html>

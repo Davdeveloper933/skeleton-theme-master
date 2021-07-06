@@ -1,0 +1,69 @@
+<header class="header white__bg">
+    <div class="container">
+        <div class="header__inner">
+            {% comment %}show this in mobile{% endcomment %}
+            <div class="mobile__menu__icon" id="mobileMenu">
+                <span class="mobile__menu__closed__icon" id="hamburger">
+                    {% include 'mobile-menu-icon' %}
+                </span>
+                <span class="mobile__menu__opened__icon hide" id="expandedMenu">
+                    {% include 'menu-opened-icon' %}
+                </span>
+            </div>
+            {% comment %}show this in mobile{% endcomment %}
+            <div class="header__logo">
+                <img class="header__logo__img" src="{{ 'logo.svg' | asset_url }}" alt="">
+            </div>
+            {% comment %}HIDE this in mobile{% endcomment %}
+            <div class="header__nav nav">
+                {% for link in linklists.header-menu.links %}
+                    <a href="{{ link.url }}" class="nav__link nav__item {% if link.title == 'sale' %}sale__link{% endif %}"">{{ link.title }}</a>
+                {% endfor %}
+                {% comment %}<form action="{{ routes.search_url }}" id="searchForm" method="get">{% endcomment %}
+                    {% comment %}<input type="search">{% endcomment %}
+                {% comment %}</form>{% endcomment %}
+                <button type="button" class="search__button button nav__item" >
+                    {% include 'search-icon' %}
+                </button>
+                <a href="{{ routes.cart_url }}" class="cart__button button nav__item">
+                    {% include 'cart-icon' %}
+                    {% if cart.item_count != 0 %}
+                        <div id="CartCount" class="cart__button__counter">
+                            <span class="cart__button__count">{{ cart.item_count }}</span>
+                        </div>
+                    {% endif %}
+                </a>
+            </div>
+            {% comment %}HIDE this in mobile{% endcomment %}
+            {% comment %}show this in mobile{% endcomment %}
+            <a href="{{ routes.cart_url }}" class="cart__button cart__button__mobile button nav__item">
+                {% include 'cart-icon' %}
+                {% if cart.item_count != 0 %}
+                    <div id="CartCount" class="cart__button__counter">
+                        <span class="cart__button__count">{{ cart.item_count }}</span>
+                    </div>
+                {% endif %}
+            </a>
+            {% comment %}show this in mobile{% endcomment %}
+        </div>
+    </div>
+</header>
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "heading_font",
+        "label": "Heading font",
+        "default": "helvetica_n4"
+      }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
