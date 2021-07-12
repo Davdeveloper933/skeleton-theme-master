@@ -1,0 +1,15 @@
+{% section 'header' %}
+<main>
+    <section class="collection">
+        <div class="collection__inner">
+            <div class="collection__grid">
+                {% for product in  collections.collection.products %}
+                <div class="collection__item">
+                    <img src="{{ product.featured_image | img_url }}" alt="img">
+                    <a href="{{ product.url }}">{{ product.title }}</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>

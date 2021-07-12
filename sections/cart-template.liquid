@@ -1,0 +1,67 @@
+<section class="cart__page ">
+    <div class="cart__header">
+        <h3 class="cart__items__count">
+            cart({{ cart.item_count }}items)
+        </h3>
+    </div>
+    <!-- <div>cart content</div>
+    <button class="cart__clear">CLEAR</button>
+    {% for item in cart.items %}
+        <img class="cart__image{% if item.image == null %} hide{% endif %}" src="{{ item | img_url: 'x190' }}" alt="{{ item.image.alt | escape }}">
+        <a href="{{ item.url }}" class="cart__product-title" data-cart-item-title data-role="product-title">
+            {{ item.product.title }}
+        </a>
+
+        {% assign variant_options = 'template ' | split: ' ' %}
+        {% if item.product.has_only_default_variant != true %}
+            {% assign variant_options = item.options_with_values %}
+        {% endif %}
+    <ul class="product-details{% if item.product.has_only_default_variant and property_size == 0 %} hide{% endif %}" >
+        {% for option in variant_options %}
+            <li class="product-details__item product-details__item--variant-option{% if item.product.has_only_default_variant %} hide{% endif %}">{{ option.name }}: {{ option.value }}</li>
+        {% endfor %}
+    </ul>
+        <h2>{{ item.price | money }}</h2>
+    {% endfor %}
+    -->
+</section>
+{% schema %}
+{
+"name": "Cart",
+"settings": [
+{
+"type": "font_picker",
+"id": "heading_font",
+"label": "Heading font",
+"default": "helvetica_n4"
+}
+]
+}
+{% endschema %}
+{% javascript %}
+const cartClear = document.querySelector('.cart__clear');
+cartClear.addEventListener('click',async () => {
+let response = await fetch('/cart/clear.js', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify({
+"token": "1d19a32178501c44ef2223d73c54d16d",
+"note": null,
+"attributes": {},
+"total_price": 0,
+"total_weight": 0,
+"item_count": 0,
+"items": [],
+"requires_shipping": false
+})
+})
+.then(response => {
+return response.json();
+})
+.catch((error) => {
+console.error('Error:', error);
+});
+})
+{% endjavascript %}

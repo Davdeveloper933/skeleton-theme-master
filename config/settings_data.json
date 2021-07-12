@@ -9,6 +9,9 @@
         "settings": {
           "heading_font": "sans-serif"
         }
+      },
+      "Cart": {
+        "type":"cart-template"
       }
     },
     "content_for_index": []

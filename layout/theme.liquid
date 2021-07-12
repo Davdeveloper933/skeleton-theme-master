@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
   <link rel="preconnect" href="https://monorail-edge.shopifysvc.com">
   <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" >
   <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
   <title>{{ shop.name }}</title>
   {%- if canonical_url != blank  -%}
@@ -24,8 +25,10 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
-<body>
+<body class="main__body">
+  {% section 'cart-template' %}
   {{ content_for_layout }}
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   <script src="{{ 'theme.js' | asset_url }}"></script>
 </body>
 </html>
