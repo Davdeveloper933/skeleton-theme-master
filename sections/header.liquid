@@ -2,7 +2,7 @@
     <div class="container header__container">
         <div class="header__inner">
             {% comment %}show this in mobile{% endcomment %}
-            <div class="mobile__menu__icon" id="mobileMenu">
+            <div class="mobile__menu__icon" id="mobileMenuIcon">
                 <span class="mobile__menu__closed__icon" id="hamburger">
                     {% include 'mobile-menu-icon' %}
                 </span>
@@ -20,7 +20,7 @@
                     <a href="{{ link.url }}" class="nav__link nav__item {% if link.title == 'sale' %}sale__link{% endif %}"">{{ link.title }}</a>
                 {% endfor %}
                 {% comment %}<form action="{{ routes.search_url }}" id="searchForm" method="get">{% endcomment %}
-                    {% comment %}<input type="search">{% endcomment %}
+                {% comment %}<input type="search">{% endcomment %}
                 {% comment %}</form>{% endcomment %}
                 <button type="button" class="search__button button nav__item" >
                     {% include 'search-icon' %}
@@ -49,21 +49,15 @@
     </div>
 </header>
 {% schema %}
-  {
-    "name": "Header",
-    "settings": [
-      {
-        "type": "font_picker",
-        "id": "heading_font",
-        "label": "Heading font",
-        "default": "helvetica_n4"
-      }
-	]
-  }
+{
+"name": "Header",
+"settings": [
+{
+"type": "font_picker",
+"id": "heading_font",
+"label": "Heading font",
+"default": "helvetica_n4"
+}
+]
+}
 {% endschema %}
-
-{% stylesheet %}
-{% endstylesheet %}
-
-{% javascript %}
-{% endjavascript %}

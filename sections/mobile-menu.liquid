@@ -1,5 +1,8 @@
-<div class="mobile__menu ">
+<div class="mobile__menu closed">
     <div class="mobile__menu__inner">
+        <span class="mobile__menu__opened__icon" id="expandedMenu">
+         {% include 'menu-opened-icon' %}
+     </span>
     <form action="/search" class="mobile__search__form mobile__item" method="get">
         <input type="text" placeholder="Type your search" class="mobile__search__input">
         <button type="button" class="search__button mobile__search__button button nav__item" >

@@ -12,9 +12,9 @@
         <small class="hint">{{ collection.products_count | pluralize: 'product', 'products' }}</small>
         </li>
       {% endfor %}
+
     </ul>
     <div id="pagination">{{ paginate | default_pagination }}</div>
-
     {% else %}
       <p>No Collections found...</p>
     {% endif %}

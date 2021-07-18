@@ -1,40 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="744733da-61b5-4f19-a2a2-9709bc35f9c8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/sections/cart-template.liquid" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/snippets/minus.liquid" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/snippets/plus.liquid" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/snippets/select-icon.liquid" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/snippets/thumb-nav-icon.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/theme.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/theme.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/theme.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layout/theme.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/layout/theme.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sections/header.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/sections/header.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sections/mobile-menu.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/sections/mobile-menu.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snippets/cart-icon.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/snippets/cart-icon.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snippets/menu-opened-icon.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/snippets/menu-opened-icon.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snippets/mobile-menu-icon.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/snippets/mobile-menu-icon.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snippets/mobile-search-icon.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/snippets/mobile-search-icon.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scss/theme.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/theme.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/404.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/404.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/article.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/article.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/cart.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/cart.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/collection.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/collection.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/customers/account.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/customers/account.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/customers/activate_account.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/customers/activate_account.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/customers/addresses.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/customers/addresses.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/customers/login.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/customers/login.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/customers/order.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/customers/order.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/customers/register.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/customers/register.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/customers/reset_password.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/customers/reset_password.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/list-collections.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/list-collections.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/password.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/password.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/search.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/search.liquid" afterDir="false" />
-    </list>
+    <list default="true" id="744733da-61b5-4f19-a2a2-9709bc35f9c8" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,6 +22,7 @@
     </file-type-list>
   </component>
   <component name="ProjectId" id="1ugcEXAFRAI3T3lhVFKWdJ2CsUl" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -67,12 +35,13 @@
     <property name="node.js.detected.package.stylelint" value="true" />
     <property name="node.js.selected.package.stylelint" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="settings.webpack" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master\assets" />
+      <recent name="C:\Users\istom\Desktop\skeleton-theme-master\snippets" />
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master\dist" />
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master" />
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master\assets\scss" />
@@ -108,7 +77,11 @@
       <workItem from="1625559404658" duration="11764000" />
       <workItem from="1625821054817" duration="27641000" />
       <workItem from="1625883186335" duration="27526000" />
-      <workItem from="1626077342769" duration="21700000" />
+      <workItem from="1626077342769" duration="39967000" />
+      <workItem from="1626163444072" duration="6494000" />
+      <workItem from="1626339775805" duration="59368000" />
+      <workItem from="1626509565001" duration="23271000" />
+      <workItem from="1626599248063" duration="7791000" />
     </task>
     <servers />
   </component>
@@ -123,7 +96,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>

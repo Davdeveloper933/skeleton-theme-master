@@ -1,30 +1,70 @@
-<section class="cart__page ">
+<div class="cart__page ">
+    <div class="cart__page__wrapper">
+    <div class="cart__page__inner">
     <div class="cart__header">
         <h3 class="cart__items__count">
-            cart({{ cart.item_count }}items)
+            cart( {{ cart.item_count }} items)
         </h3>
+        <span class="cart__close__btn">
+            {% render 'cart-close-icon' %}
+        </span>
     </div>
-    <!-- <div>cart content</div>
-    <button class="cart__clear">CLEAR</button>
-    {% for item in cart.items %}
-        <img class="cart__image{% if item.image == null %} hide{% endif %}" src="{{ item | img_url: 'x190' }}" alt="{{ item.image.alt | escape }}">
-        <a href="{{ item.url }}" class="cart__product-title" data-cart-item-title data-role="product-title">
-            {{ item.product.title }}
-        </a>
+        <div class="cart__content">
+            {% for cart_item in cart.items %}
+                <div class='cart__deleted__item hide'>
+                    <a href="{{ cart_item.url }}" class="cart__item__title">{{ cart_item.title }}</a>
+                    is deleted from your cart.
+                </div>
+                <div class="cart__item" data-line_key="{{ cart_item.key }}">
+                    <div class="cart__item__image__wrapper">
+                        <img src="{{ cart_item | img_url }}" alt="{{ cart_item.image.alt | escape }}" class="cart__item__image">
+                    </div>
+                    <div class="cart__item__info">
+                        <a href="{{ cart_item.url }}" class="cart__item__title">{{ cart_item.title }}</a>
+                        <h3 class="cart__item__price" data-product_price="{{ cart_item.price }}">
+                            {{ cart_item.price | money }}
+                        </h3>
+                        <div class="custom_input cart__item__custom__input">
+                            <div class="custom_input__minus cart__minus">
+                                <svg width="12" height="3" viewBox="0 0 12 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.69873 2.21891V0.643912H11.3037V2.21891H0.69873Z" fill="black"></path>
+                                </svg>
+                            </div>
+                            <input type="number" class="custom_input__field cart__input__field" data-variant_id="{{ cart_item.variant_id }}" value="{{ cart_item.quantity }}">
+                            <div class="cart__plus custom_input__plus">
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.1701 5.09791V6.96691H6.9281V11.2089H5.0801V6.96691H0.838102V5.09791H5.0801V0.855911H6.9281V5.09791H11.1701Z" fill="black"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
 
-        {% assign variant_options = 'template ' | split: ' ' %}
-        {% if item.product.has_only_default_variant != true %}
-            {% assign variant_options = item.options_with_values %}
-        {% endif %}
-    <ul class="product-details{% if item.product.has_only_default_variant and property_size == 0 %} hide{% endif %}" >
-        {% for option in variant_options %}
-            <li class="product-details__item product-details__item--variant-option{% if item.product.has_only_default_variant %} hide{% endif %}">{{ option.name }}: {{ option.value }}</li>
-        {% endfor %}
-    </ul>
-        <h2>{{ item.price | money }}</h2>
-    {% endfor %}
-    -->
-</section>
+            {% comment %}<div class="cart__cart__is__empty">{% endcomment %}
+            {% comment %}Your cart is empty...{% endcomment %}
+            {% comment %}but you can fix it.{% endcomment %}
+            {% comment %}<a href="{{ routes.all_products_collection_url }}" class="start__shopping__btn button empty__cart__shop__btn">Start Shopping</a>{% endcomment %}
+            {% comment %}</div>{% endcomment %}
+
+        </div>
+        <div class="cart__footer">
+            <div class="cart__subtotal">
+                <span class="cart__subtotal__text">Subtotal</span>
+                <span class="cart__subtotal__number">{{ cart.total_price | money }}</span>
+            </div>
+            <div class="cart__proceed_to_checkout">
+                <a href="#" class="view__cart__button cart__button">
+                    View cart
+                </a>
+                <a href="#" class="cart__proceed_to_checkout__button cart__button">
+                    Proceed to checkout
+                </a>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
 {% schema %}
 {
 "name": "Cart",
@@ -38,30 +78,83 @@
 ]
 }
 {% endschema %}
-{% javascript %}
-const cartClear = document.querySelector('.cart__clear');
-cartClear.addEventListener('click',async () => {
-let response = await fetch('/cart/clear.js', {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json'
-},
-body: JSON.stringify({
-"token": "1d19a32178501c44ef2223d73c54d16d",
-"note": null,
-"attributes": {},
-"total_price": 0,
-"total_weight": 0,
-"item_count": 0,
-"items": [],
-"requires_shipping": false
-})
-})
-.then(response => {
-return response.json();
-})
-.catch((error) => {
-console.error('Error:', error);
-});
-})
-{% endjavascript %}
+<script>
+    const cart_minus = document.querySelectorAll('.cart__minus');
+    const cart_plus = document.querySelectorAll('.cart__plus');
+    const cart_item_quantity = document.querySelectorAll('.cart__input__field');
+    const cart_item_deleted = document.querySelectorAll('.cart__deleted__item');
+    const cart_item = document.querySelectorAll('.cart__item');
+    const cart_subtotal_val = document.querySelector('.cart__subtotal__number');
+    const cart_item_price = document.querySelectorAll('.cart__item__price');
+
+    for(let i = 0; i < cart_item_quantity.length; i++) {
+        let quantity = parseInt(cart_item_quantity[i].value);
+        let index = i+1;
+        let total_price = parseFloat('{{ cart.total_price }}');
+        let product_price = parseFloat(cart_item_price[i].dataset.product_price);
+        cart_plus[i].addEventListener('click',async ()=> {
+            quantity++;
+            cart_item_quantity[i].value = quantity;
+            total_price += product_price;
+            cart_subtotal_val.textContent = Shopify.formatMoney(total_price,Shopify.money_format)
+            const response = await fetch('/cart/change.js',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "line":index,
+                    "quantity":quantity
+                })
+            })
+                .then(response => {
+                    response.json();
+                }).then(response => {
+                    console.log(JSON.stringify(response))
+                })
+        })
+        cart_minus[i].addEventListener('click', async () => {
+            --quantity
+            total_price -= product_price;
+            cart_subtotal_val.textContent = Shopify.formatMoney(total_price,Shopify.money_format)
+            if (quantity < 1 ) {
+                let response = await fetch('/cart/change.js', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "line": index,
+                        "quantity": 0
+                    })
+                })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                cart_item[i].remove();
+                cart_item_deleted[i].style.display = 'block';
+            }else {
+                cart_item_quantity[i].value = quantity;
+                let response = await fetch('/cart/change.js',{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "line":index,
+                        "quantity":quantity
+                    })
+                })
+                    .then(response => {
+                        response.json()
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error)
+                    });
+            }
+        })
+    }
+</script>

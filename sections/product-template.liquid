@@ -1,0 +1,313 @@
+<main>
+    <section class="product_page main">
+        <div class="product__inner container">
+            <div class="product__item">
+                <div class="product__left__side">
+
+                    <div
+                            style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
+                            class="swiper-container mySwiper2"
+                    >
+                        <div class="swiper-button-next swiper-button-nav"></div>
+                        <div class="swiper-button-prev swiper-button-nav"></div>
+                        <div class="swiper-wrapper">
+                            {% for img in product.images %}
+                                <div class="swiper-slide">
+                                    <img src="{{ img | img_url:'master' }}" alt="">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div  class="swiper-container mySwiper">
+                        <div class="thumb-button-next swiper-button-nav">
+                            {% include 'thumb-nav-icon.liquid' %}
+                        </div>
+                        <div class="thumb-button-prev swiper-button-nav">
+                            {% include 'thumb-nav-icon.liquid' %}
+                        </div>
+                        <div class="swiper-wrapper">
+                            {% for img in product.images %}
+                                <div class="swiper-slide">
+                                    <img src="{{ img | img_url:'master' }}" alt="">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div id="productForm" class="product__right__side">
+                    <h1 class="product__title"
+                    >{{ product.title }}</h1>
+                    {% for product_option in product.options_with_values %}
+                    <div class="mobile__grey__wrapper">
+                        <h4 class="product__option__title">Choose your {{ product_option.name }}</h4>
+                        <label class="product__select custom_select" for="productSelect">
+                            {% include 'select-icon.liquid' %}
+                            <select  id="productSelect">
+                                {% for variant in product.variants %}
+                                    <option value="{{ variant.id }}"
+                                            data-variant_price="{{ variant.price | money }}"
+                                            {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %}
+                                    >
+                                        {{ variant.title }}  {%- if variant.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        {% endfor %}
+                        <h3 class="product__price">
+                        <span class="product__price__value">
+                            {{ product.price | money }}
+                        </span>
+                            {% if cart.taxes_included %}
+                                <sup class="product__price__tax">
+                                    taxes included
+                                </sup>
+                            {% else %}
+                                <sup class="product__price__tax">
+                                    excluding taxes
+                                </sup>
+                            {% endif %}
+                        </h3>
+                        <div class="product__add-to-cart">
+                            <div class="custom_input product__add-to-cart__custom-input">
+
+                                <div class="custom_input__minus product__minus">
+                                    {% include 'minus.liquid' %}
+                                </div>
+                                <input type="number" class="custom_input__field product__input__field" value="1">
+                                <div class="product__plus custom_input__plus">
+                                    {% include 'plus.liquid' %}
+                                </div>
+                            </div>
+                            <button class="product__add-to-cart-button" data-cart-url="{{ cart_url }}" id="addToCart">
+                                Add To Cart
+                                <div class="donut product__preloader"></div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product__description">
+                        {{ product.content }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% schema %}
+{
+"name": "Product Page",
+"settings":[]
+}
+{% endschema %}
+
+<script>
+const addCartBtn = document.getElementById('addToCart');
+const prod_select = document.getElementById('productSelect');
+const product_minus = document.querySelector('.product__minus');
+const product_plus = document.querySelector('.product__plus');
+const product_quantity_count = document.querySelector('.product__input__field');
+const preloader = document.querySelector('.product__preloader');
+const cartBtnCount = document.querySelector('.cart__button__count');
+const cart_content = document.querySelector('.cart__content');
+const cart_item_count = document.querySelector('.cart__items__count');
+const cart_drawer = document.getElementById('cartDrawer');
+const cart_subtotal = document.querySelector('.cart__subtotal');
+
+
+let quantity = parseInt(product_quantity_count.value);
+
+    function minus() {
+        if(quantity > 1) {
+                --quantity;
+                product_quantity_count.value = quantity
+            }
+    }
+    function plus() {
+        ++quantity;
+        product_quantity_count.value = quantity
+    }
+
+product_minus.addEventListener('click',minus)
+product_plus.addEventListener('click',plus)
+
+addCartBtn.addEventListener('click', async () => {
+// e.preventDefault();
+    let prod_id = prod_select.value;
+
+    addCartBtn.classList.add("preload");
+    preloader.classList.add("preload")
+
+setTimeout(()=> {
+    addCartBtn.classList.remove("preload");
+    preloader.classList.remove("preload")
+},500)
+
+let response = await fetch('/cart/add.js', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        'items': [
+            {
+                'id': prod_id,
+                'quantity': quantity
+            }
+        ]
+    })
+})
+    .then(response => {
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.sections)
+    })
+
+    drawCart();
+})
+
+function drawCart() {
+    fetch('/cart.js')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            // cartBtnCount.textContent = data.item_count
+            console.log('cart.js =>', data.items)
+            cart_item_count.textContent = `cart( ${ data.item_count } items)`
+            cart_content.innerHTML = ``;
+            data.items.forEach((item,index)=> {
+                cart_content.innerHTML += `
+                    <div class='cart__deleted__item hide'>
+                        <a href="${item.url}" class="cart__item__title">${item.product_title}</a>
+                        is deleted from your cart.
+                    </div>
+                    <div class="cart__item" data-line_key="${item.key}">
+                        <div class="cart__item__image__wrapper">
+                            <img src="${item.image}" alt="{{ cart_item.image.alt | escape }}" class="cart__item__image">
+                        </div>
+                        <div class="cart__item__info">
+                            <a href="${item.url}" class="cart__item__title">${item.product_title} - ${item.options_with_values[0].value}</a>
+                             <h3 class="cart__item__price" data-product_price="${item.price}">${Shopify.formatMoney(item.price,Shopify.money_format)}</h3>
+                             <div class="custom_input cart__item__custom__input">
+                    <div class="custom_input__minus cart__minus" >
+                        <svg width="12" height="3" viewBox="0 0 12 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0.69873 2.21891V0.643912H11.3037V2.21891H0.69873Z" fill="black"></path>
+                        </svg>
+                    </div>
+                    <input type="number" class="custom_input__field cart__input__field"  name="updates[]" value="${item.quantity}">
+                    <div class="cart__plus custom_input__plus">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.1701 5.09791V6.96691H6.9281V11.2089H5.0801V6.96691H0.838102V5.09791H5.0801V0.855911H6.9281V5.09791H11.1701Z" fill="black"></path>
+                        </svg>
+                    </div>
+                </div>
+                        </div>
+                  </div>`
+            })
+            cart_subtotal.innerHTML = `<span class="cart__subtotal__text">Subtotal</span>
+                <span class="cart__subtotal__number" data-total_price="${Shopify.formatMoney(data.total_price,Shopify.money_format)}">
+                ${Shopify.formatMoney(data.total_price,Shopify.money_format)}
+            </span>`
+
+            const cart_minus = document.querySelectorAll('.cart__minus');
+            const cart_plus = document.querySelectorAll('.cart__plus');
+            const cart_item_quantity = document.querySelectorAll('.cart__input__field');
+            const cart_item_deleted = document.querySelectorAll('.cart__deleted__item');
+            const cart_item = document.querySelectorAll('.cart__item');
+            const cart_subtotal_val = document.querySelector('.cart__subtotal__number');
+            const cart_item_price = document.querySelectorAll('.cart__item__price');
+
+            for(let i = 0; i < cart_item_quantity.length; i++) {
+                let quantity = parseInt(cart_item_quantity[i].value);
+                let index = i+1;
+                let items_count = parseInt(data.item_count);
+                let total_price = parseFloat(data.total_price);
+                let product_price = parseFloat(cart_item_price[i].dataset.product_price);
+                cart_plus[i].addEventListener('click',async ()=> {
+                    quantity++;
+                    cart_item_quantity[i].value = quantity;
+                    total_price += product_price;
+                    items_count+=1;
+                    cart_subtotal_val.textContent = Shopify.formatMoney(total_price,Shopify.money_format);
+                    cart_item_count.textContent = `cart( ${ items_count } items)`
+                    const response = await fetch('/cart/change.js',{
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "line":index,
+                            "quantity":quantity
+                        })
+                    })
+                        .then(response => {
+                            response.json();
+                        }).then(response => {
+                            console.log(JSON.stringify(response))
+                        })
+                })
+                cart_minus[i].addEventListener('click', async () => {
+                    --quantity
+                    items_count-=1;
+                    cart_item_count.textContent = `cart( ${ items_count } items)`
+                    if (quantity < 1 ) {
+                        total_price -= product_price;
+                        cart_subtotal_val.textContent = Shopify.formatMoney(total_price,Shopify.money_format);
+                        let response = await fetch('/cart/change.js', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                "line": index,
+                                "quantity": 0
+                            })
+                        })
+                            .then(response => {
+                                return response.json();
+                            })
+                            .then(data => {
+                                console.log(data)
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                            });
+                        cart_item[i].remove();
+                        cart_item_deleted[i].style.display = 'block';
+                    }else {
+                        total_price -= product_price;
+                        cart_subtotal_val.textContent = Shopify.formatMoney(total_price,Shopify.money_format);
+                        cart_item_quantity[i].value = quantity;
+                        let response = await fetch('/cart/change.js',{
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                "line":index,
+                                "quantity":quantity
+                            })
+                        })
+                            .then(response => {
+                                response.json()
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error)
+                            });
+                    }
+                })
+            }
+        })
+}
+
+    prod_select.addEventListener('change',() =>{
+        prod_id = prod_select.value;
+        prodPrice.textContent = prod_select.options[prod_select.selectedIndex].dataset.variant_price;
+        console.log(prod_select.options[prod_select.selectedIndex].dataset.variant_price)
+    })
+
+
+</script>

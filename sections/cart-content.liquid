@@ -1,0 +1,40 @@
+<div class="cart__content">
+    <div id="cartDrawer"></div>
+    {% for cart_item in cart.items %}
+        <div class='cart__deleted__item hide'>
+            <a href="{{ cart_item.url }}" class="cart__item__title">{{ cart_item.title }}</a>
+            is deleted from your cart.
+        </div>
+        <div class="cart__item">
+            <div class="cart__item__image__wrapper">
+                <img src="{{ cart_item | img_url }}" alt="{{ cart_item.image.alt | escape }}" class="cart__item__image">
+            </div>
+            <div class="cart__item__info">
+                <a href="{{ cart_item.url }}" class="cart__item__title">{{ cart_item.title }}</a>
+                <h3 class="cart__item__price" >
+                    {{ cart_item.price | money }}
+                </h3>
+                <div class="custom_input cart__item__custom__input">
+                    <div class="custom_input__minus cart__minus">
+                        <svg width="12" height="3" viewBox="0 0 12 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0.69873 2.21891V0.643912H11.3037V2.21891H0.69873Z" fill="black"></path>
+                        </svg>
+                    </div>
+                    <input type="number" class="custom_input__field cart__input__field" data-variant_id="{{ cart_item.variant_id }}" value="{{ cart_item.quantity }}">
+                    <div class="cart__plus custom_input__plus">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.1701 5.09791V6.96691H6.9281V11.2089H5.0801V6.96691H0.838102V5.09791H5.0801V0.855911H6.9281V5.09791H11.1701Z" fill="black"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% comment %}<div class="cart__cart__is__empty">{% endcomment %}
+    {% comment %}Your cart is empty...{% endcomment %}
+    {% comment %}but you can fix it.{% endcomment %}
+    {% comment %}<a href="{{ routes.all_products_collection_url }}" class="start__shopping__btn button empty__cart__shop__btn">Start Shopping</a>{% endcomment %}
+    {% comment %}</div>{% endcomment %}
+
+</div>

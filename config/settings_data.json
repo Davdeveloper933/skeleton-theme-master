@@ -1,19 +1,8 @@
 {
   "current": {
+    "type_header_font": "muli_n6",
     "heading_font": "Roboto",
     "body_font": "Lato",
-    "type_header_font": "muli_n6",
-    "sections": {
-      "header": {
-        "type": "header",
-        "settings": {
-          "heading_font": "sans-serif"
-        }
-      },
-      "Cart": {
-        "type":"cart-template"
-      }
-    },
     "content_for_index": []
   },
   "presets": {
