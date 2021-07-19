@@ -23,6 +23,11 @@
                         <a href="{{ cart_item.url }}" class="cart__item__title">{{ cart_item.title }}</a>
                         <h3 class="cart__item__price" data-product_price="{{ cart_item.price }}">
                             {{ cart_item.price | money }}
+                            {% if cart_item.variant.compare_at_price %}
+                        <span class="cart__item__sale__price sale_price">
+                            {{ cart_item.variant.compare_at_price | money }}.
+                        </span>
+                            {% endif %}
                         </h3>
                         <div class="custom_input cart__item__custom__input">
                             <div class="custom_input__minus cart__minus">
@@ -86,24 +91,29 @@
     const cart_item = document.querySelectorAll('.cart__item');
     const cart_subtotal_val = document.querySelector('.cart__subtotal__number');
     const cart_item_price = document.querySelectorAll('.cart__item__price');
+    const cart_items_count = document.querySelector('.cart__items__count');
 
     for(let i = 0; i < cart_item_quantity.length; i++) {
         let quantity = parseInt(cart_item_quantity[i].value);
-        let index = i+1;
+        // let index = i+1;
+        let id = cart_item[i].dataset.line_key;
+        let items_count = parseInt('{{ cart.item_count }}');
         let total_price = parseFloat('{{ cart.total_price }}');
         let product_price = parseFloat(cart_item_price[i].dataset.product_price);
         cart_plus[i].addEventListener('click',async ()=> {
             quantity++;
+            items_count+=1;
             cart_item_quantity[i].value = quantity;
             total_price += product_price;
-            cart_subtotal_val.textContent = Shopify.formatMoney(total_price,Shopify.money_format)
+            cart_subtotal_val.textContent = Shopify.formatMoney(total_price,Shopify.money_format);
+            cart_items_count.textContent = `cart( ${ items_count } items)`;
             const response = await fetch('/cart/change.js',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "line":index,
+                    "id":id,
                     "quantity":quantity
                 })
             })
@@ -115,6 +125,8 @@
         })
         cart_minus[i].addEventListener('click', async () => {
             --quantity
+            items_count-=1;
+            cart_items_count.textContent = `cart( ${ items_count } items)`;
             total_price -= product_price;
             cart_subtotal_val.textContent = Shopify.formatMoney(total_price,Shopify.money_format)
             if (quantity < 1 ) {
@@ -124,7 +136,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        "line": index,
+                        "id": id,
                         "quantity": 0
                     })
                 })
@@ -144,7 +156,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        "line":index,
+                        "id":id,
                         "quantity":quantity
                     })
                 })

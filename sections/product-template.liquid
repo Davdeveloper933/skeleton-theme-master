@@ -68,6 +68,7 @@
                                     excluding taxes
                                 </sup>
                             {% endif %}
+                            {{ product.compare_at_price | money }}
                         </h3>
                         <div class="product__add-to-cart">
                             <div class="custom_input product__add-to-cart__custom-input">
@@ -153,7 +154,10 @@ let response = await fetch('/cart/add.js', {
         'items': [
             {
                 'id': prod_id,
-                'quantity': quantity
+                'quantity': quantity,
+                properties: {
+                    'compare_at_price': '{{ product.compare_at_price }}'
+                }
             }
         ]
     })
@@ -162,7 +166,7 @@ let response = await fetch('/cart/add.js', {
         return response.json();
     })
     .then(data => {
-        console.log(data.sections)
+        console.log(data)
     })
 
     drawCart();
@@ -190,7 +194,12 @@ function drawCart() {
                         </div>
                         <div class="cart__item__info">
                             <a href="${item.url}" class="cart__item__title">${item.product_title} - ${item.options_with_values[0].value}</a>
-                             <h3 class="cart__item__price" data-product_price="${item.price}">${Shopify.formatMoney(item.price,Shopify.money_format)}</h3>
+                             <h3 class="cart__item__price" data-product_price="${item.price}">
+                             ${Shopify.formatMoney(item.price,Shopify.money_format)}
+                            <span class="cart__item__sale__price sale_price">
+                                ${Shopify.formatMoney(item.properties.compare_at_price,Shopify.money_format)}
+                            </span>
+                             </h3>
                              <div class="custom_input cart__item__custom__input">
                     <div class="custom_input__minus cart__minus" >
                         <svg width="12" height="3" viewBox="0 0 12 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -222,16 +231,17 @@ function drawCart() {
 
             for(let i = 0; i < cart_item_quantity.length; i++) {
                 let quantity = parseInt(cart_item_quantity[i].value);
-                let index = i+1;
+                // let index = i+1;
+                let id = cart_item[i].dataset.line_key;
                 let items_count = parseInt(data.item_count);
                 let total_price = parseFloat(data.total_price);
                 let product_price = parseFloat(cart_item_price[i].dataset.product_price);
                 cart_plus[i].addEventListener('click',async ()=> {
-                    quantity++;
+                    quantity += 1;
                     cart_item_quantity[i].value = quantity;
-                    total_price += product_price;
+                    // total_price += product_price;
                     items_count+=1;
-                    cart_subtotal_val.textContent = Shopify.formatMoney(total_price,Shopify.money_format);
+
                     cart_item_count.textContent = `cart( ${ items_count } items)`
                     const response = await fetch('/cart/change.js',{
                         method: 'POST',
@@ -239,30 +249,30 @@ function drawCart() {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            "line":index,
+                            "id":id,
                             "quantity":quantity
                         })
                     })
                         .then(response => {
-                            response.json();
-                        }).then(response => {
-                            console.log(JSON.stringify(response))
+                           return response.json();
+                        }).then(data => {
+                            cart_subtotal_val.textContent = Shopify.formatMoney(data.total_price,Shopify.money_format);
+                            console.log(data)
                         })
                 })
                 cart_minus[i].addEventListener('click', async () => {
-                    --quantity
+                    quantity -= 1;
                     items_count-=1;
                     cart_item_count.textContent = `cart( ${ items_count } items)`
+                    // total_price -= product_price;
                     if (quantity < 1 ) {
-                        total_price -= product_price;
-                        cart_subtotal_val.textContent = Shopify.formatMoney(total_price,Shopify.money_format);
                         let response = await fetch('/cart/change.js', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({
-                                "line": index,
+                                "id": id,
                                 "quantity": 0
                             })
                         })
@@ -270,6 +280,7 @@ function drawCart() {
                                 return response.json();
                             })
                             .then(data => {
+                                cart_subtotal_val.textContent = Shopify.formatMoney(data.total_price,Shopify.money_format);
                                 console.log(data)
                             })
                             .catch((error) => {
@@ -278,8 +289,6 @@ function drawCart() {
                         cart_item[i].remove();
                         cart_item_deleted[i].style.display = 'block';
                     }else {
-                        total_price -= product_price;
-                        cart_subtotal_val.textContent = Shopify.formatMoney(total_price,Shopify.money_format);
                         cart_item_quantity[i].value = quantity;
                         let response = await fetch('/cart/change.js',{
                             method: 'POST',
@@ -287,12 +296,15 @@ function drawCart() {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({
-                                "line":index,
+                                "id":id,
                                 "quantity":quantity
                             })
                         })
                             .then(response => {
-                                response.json()
+                               return response.json()
+                            }).then(data => {
+                                cart_subtotal_val.textContent = Shopify.formatMoney(data.total_price,Shopify.money_format);
+                                console.log(data)
                             })
                             .catch((error) => {
                                 console.error('Error:', error)
