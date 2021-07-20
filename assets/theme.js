@@ -5,9 +5,99 @@ const prodForm = document.getElementById('productForm');
 const prodPrice = document.querySelector('.product__price__value');
 const cart_total_price = document.querySelector('.cart__subtotal__number');
 const item_count_num = document.querySelector('.item__count__val');
-// console.log(document.querySelectorAll('.cart__item__title'))
+// const addCartBtn = document.getElementById('addToCart');
+console.log('theme.js')
 
-let getTheCartData = {};
+// var cart_popup = (function () {
+//
+// })
+
+var product = (function () {
+        console.log(this)
+        function docEl(selector,all) {
+            if(selector[0] === '#'){
+                return document.getElementById(selector)
+            }else if(selector[0] === '.') {
+                return document.querySelector(selector)
+            }else if(selector[0] === '.' && all) {
+                return document.querySelectorAll(selector)
+            }
+        }
+        function Data (){
+            this.selectors = {
+                addToCartBtn: 'addToCart',
+                product_select: 'productSelect',
+                product_price: '.product__price__value',
+                quantity: '.product__input__field',
+                minus_btn: '.product__minus',
+                plus_btn: '.product__plus',
+            }
+            this.id = document.getElementById(this.selectors.product_select).value
+            this.quantity = parseInt(document.querySelector(this.selectors.quantity).value)
+            this.variant_select = document.getElementById(this.selectors.product_select)
+            this.addCartBtn = document.getElementById(this.selectors.addToCartBtn)
+        }
+        this.data = new Data();
+        console.log(data.quantity,'quantity')
+
+        methods = {
+            addToCart: function (id, quantity) {
+                fetch('/cart/add.js', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'items': [
+                            {
+                                'id': id,
+                                'quantity': quantity
+                            }
+                        ]
+                    })
+                })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log(data)
+                    })
+                console.log('added to cart')
+            },
+            onProductVariantChange: function (select) {
+                data.id = document.getElementById(data.selectors.product_select).value;
+                document.querySelector(data.selectors.product_price).textContent =
+                    select.options[select.selectedIndex].dataset.variant_price;
+            },
+            minusQty: function () {
+                // let qty = data.quantity
+                if (data.quantity > 1) {
+                    data.quantity -= 1;
+                    docEl(data.selectors.quantity).value = data.quantity
+                }
+            },
+            plusQty: function () {
+                // let qty = data.quantity
+                // qty += 1
+                data.quantity += 1
+                // console.log(quantity)
+                docEl(data.selectors.quantity).value = data.quantity
+            }
+        }
+
+            data.variant_select.addEventListener('change', function () {
+                methods.onProductVariantChange(this)
+            })
+
+            data.addCartBtn.addEventListener('click', function () {
+                methods.addToCart(data.id, data.quantity)
+            })
+            document.querySelector(data.selectors.plus_btn).addEventListener('click', methods.plusQty)
+            document.querySelector(data.selectors.minus_btn).addEventListener('click', methods.minusQty)
+
+})()
+
+
 
 mobMenuIcon.addEventListener('click',() => {
     mobileMenu.classList.remove('closed');
@@ -91,5 +181,3 @@ Shopify.formatMoney = function(cents, format) {
 
     return formatString.replace(placeholderRegex, value);
 };
-
-console.log(Shopify.formatMoney(145, Shopify.money_format))
