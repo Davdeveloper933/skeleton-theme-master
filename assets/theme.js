@@ -6,23 +6,25 @@ const prodPrice = document.querySelector('.product__price__value');
 const cart_total_price = document.querySelector('.cart__subtotal__number');
 const item_count_num = document.querySelector('.item__count__val');
 const addCartBtn = document.getElementById('addToCart');
-console.log('theme.js')
-// var cart_popup = (function () {
-//
-// })
+
+var cart_popup = (function () {
+
+})
 
 var product = (function () {
-        console.log(this)
-        function docEl(selector,all) {
-            if(selector[0] === '#'){
+    function Product() {
+        self = this;
+        function docEl(selector, all) {
+            if (selector[0] === '#') {
                 return document.getElementById(selector)
-            }else if(selector[0] === '.') {
+            } else if (selector[0] === '.') {
                 return document.querySelector(selector)
-            }else if(selector[0] === '.' && all) {
+            } else if (selector[0] === '.' && all) {
                 return document.querySelectorAll(selector)
             }
         }
-        function Data (){
+
+        function Data() {
             this.selectors = {
                 addToCartBtn: 'addToCart',
                 product_select: 'productSelect',
@@ -36,8 +38,9 @@ var product = (function () {
             this.variant_select = document.getElementById(this.selectors.product_select)
             this.addCartBtn = document.getElementById(this.selectors.addToCartBtn)
         }
-        var data = new Data();
-        console.log(data.quantity,'quantity')
+
+        this.data = new Data();
+        console.log(self.data.quantity, 'quantity')
 
         methods = {
             addToCart: function (id, quantity) {
@@ -64,36 +67,37 @@ var product = (function () {
                 console.log('added to cart')
             },
             onProductVariantChange: function (select) {
-                data.id = document.getElementById(data.selectors.product_select).value;
-                document.querySelector(data.selectors.product_price).textContent =
+                self.data.id = document.getElementById(self.data.selectors.product_select).value;
+                document.querySelector(self.data.selectors.product_price).textContent =
                     select.options[select.selectedIndex].dataset.variant_price;
             },
             minusQty: function () {
                 // let qty = data.quantity
-                if (data.quantity > 1) {
-                    data.quantity -= 1;
-                    docEl(data.selectors.quantity).value = data.quantity
+                if (self.data.quantity > 1) {
+                    self.data.quantity -= 1;
+                    docEl(self.data.selectors.quantity).value = self.data.quantity
                 }
             },
             plusQty: function () {
                 // let qty = data.quantity
                 // qty += 1
-                data.quantity += 1
+                self.data.quantity += 1
                 // console.log(quantity)
-                docEl(data.selectors.quantity).value = data.quantity
+                docEl(self.data.selectors.quantity).value = self.data.quantity
             }
         }
 
-            data.variant_select.addEventListener('change', function () {
-                methods.onProductVariantChange(this)
-            })
+        self.data.variant_select.addEventListener('change', function () {
+            methods.onProductVariantChange(this)
+        })
 
-            data.addCartBtn.addEventListener('click', function () {
-                methods.addToCart(data.id, data.quantity)
-            })
-            document.querySelector(data.selectors.plus_btn).addEventListener('click', methods.plusQty)
-            document.querySelector(data.selectors.minus_btn).addEventListener('click', methods.minusQty)
-
+        self.data.addCartBtn.addEventListener('click', function () {
+            methods.addToCart(self.data.id, self.data.quantity)
+        })
+        document.querySelector(self.data.selectors.plus_btn).addEventListener('click', methods.plusQty)
+        document.querySelector(self.data.selectors.minus_btn).addEventListener('click', methods.minusQty)
+    }
+        return new Product();
 })()
 
 
