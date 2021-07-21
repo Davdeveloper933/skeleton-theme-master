@@ -5,9 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/theme.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/theme.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/layout/theme.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/layout/theme.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sections/cart-template.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/sections/cart-template.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sections/product-template.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/sections/product-template.liquid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product.liquid" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +88,7 @@
       <workItem from="1626599248063" duration="7791000" />
       <workItem from="1626617781793" duration="13545000" />
       <workItem from="1626684489682" duration="8713000" />
-      <workItem from="1626773461754" duration="31485000" />
+      <workItem from="1626773461754" duration="33823000" />
     </task>
     <servers />
   </component>

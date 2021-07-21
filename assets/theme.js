@@ -5,9 +5,8 @@ const prodForm = document.getElementById('productForm');
 const prodPrice = document.querySelector('.product__price__value');
 const cart_total_price = document.querySelector('.cart__subtotal__number');
 const item_count_num = document.querySelector('.item__count__val');
-// const addCartBtn = document.getElementById('addToCart');
+const addCartBtn = document.getElementById('addToCart');
 console.log('theme.js')
-
 // var cart_popup = (function () {
 //
 // })
@@ -37,7 +36,7 @@ var product = (function () {
             this.variant_select = document.getElementById(this.selectors.product_select)
             this.addCartBtn = document.getElementById(this.selectors.addToCartBtn)
         }
-        this.data = new Data();
+        var data = new Data();
         console.log(data.quantity,'quantity')
 
         methods = {
