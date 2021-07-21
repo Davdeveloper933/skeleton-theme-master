@@ -3,18 +3,23 @@
     <div class="cart__page__inner">
     <div class="cart__header">
         <h3 class="cart__items__count">
-            cart( {{ cart.item_count }} items)
+            cart(
+            <span class="cart__items__count__value">
+                {{ cart.item_count }}
+            </span>
+            items)
         </h3>
         <span class="cart__close__btn">
             {% render 'cart-close-icon' %}
         </span>
     </div>
         <div class="cart__content">
+            <div class="cart_test"></div>
             {% for cart_item in cart.items %}
-                <div class='cart__deleted__item hide'>
-                    <a href="{{ cart_item.url }}" class="cart__item__title">{{ cart_item.title }}</a>
-                    is deleted from your cart.
-                </div>
+                {% comment %}<div class='cart__deleted__item hide'>{% endcomment %}
+                    {% comment %}<a href="{{ cart_item.url }}" class="cart__item__title">{{ cart_item.title }}</a>{% endcomment %}
+                    {% comment %}is deleted from your cart.{% endcomment %}
+                {% comment %}</div>{% endcomment %}
                 <div class="cart__item" data-line_key="{{ cart_item.key }}">
                     <div class="cart__item__image__wrapper">
                         <img src="{{ cart_item | img_url }}" alt="{{ cart_item.image.alt | escape }}" class="cart__item__image">
