@@ -2,8 +2,7 @@
   "current": {
     "type_header_font": "muli_n6",
     "heading_font": "Roboto",
-    "body_font": "Lato",
-    "content_for_index": []
+    "body_font": "Lato"
   },
   "presets": {
     "Default": {}

@@ -6,6 +6,8 @@
 // const cart_total_price = document.querySelector('.cart__subtotal__number');
 // const item_count_num = document.querySelector('.item__count__val');
 // const addCartBtn = document.getElementById('addToCart');
+console.log(money_format)
+
 
 window.onload = function () {
     var selectors = {
@@ -32,40 +34,34 @@ window.onload = function () {
         this.item_counter = document.querySelector(selectors.cart_item_count);
         this.cart_item = document.querySelectorAll(selectors.cart_item);
         // // this.fetchCart = fetch('/cart.js');
-        // this.getCart = async function () {
-        //    let response = await fetch('/cart.js');
-        //    let data = await response.json()
-        //    return data;
-        // }
+        self.cart = {};
+        this.getCart = async function () {
+           let response = await fetch('/cart.js');
+           let data = await response.json()
+           return data;
+           // fetch('/cart.js')
+           //  .then(response => response.json())
+           //  .then(cart => {
+           //          self.cart = cart
+           //      })
+        }
+
+        this.getCart()
+            .then(cart => {
+               self.cart = cart;
+            })
+
+        //
 
 
-
-        this.cart = {};
-
-        this.renderCart = function (){
-            fetch('/cart.js')
-                .then(response => response.json())
-                .then(cart => {
-                    self.cart = cart
-                    self.test.textContent = self.cart.total_price;
-                    self.item_counter.textContent = self.cart.item_count;
-                })
-            console.log(self.cart)
+        this.renderCart = function (cart){
+            // self.test.textContent = self.cart.total_price;
+            // self.item_counter.textContent = self.cart.item_count;
+            // console.log(self.cart)
+            self.test.textContent = cart.total_price;
+            self.item_counter.textContent = cart.item_count;
+            console.log(cart)
         }//
-            this.setContent = function () {
-                // fetch('/cart.js')
-                //     .then(response => response.json())
-                //     self.getCart()
-                //     .then(cart => {
-                //         // self.cart.count = parseInt(cart.item_count);
-                //         // self.cart.total_price = cart.total_price
-                //         self.test.textContent = cart.total_price
-                //         self.item_counter.textContent = cart.item_count
-                //     })
-                // self.cart.count+=1;
-                //
-                // self.test.textContent = self.cart.total_price
-            }
         }
         // console.log(this.cartData.item_count.textContent)
 
@@ -80,8 +76,8 @@ window.onload = function () {
         data.variant = document.getElementById(selectors.product_select) || data.variant;
         data.addCartBtn = document.getElementById(selectors.addToCartBtn) || data.addCartBtn;
         methods = {
-            addToCart: function (id, quantity) {
-               fetch('/cart/add.js', {
+            addToCart:async function (id, quantity) {
+              let response = await fetch('/cart/add.js', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -95,13 +91,16 @@ window.onload = function () {
                         ]
                     })
                 })
-                   .then(response => response.json())
-                   .then(data => {
-                               // // self.cart.count = parseInt(cart.item_count);
-                               // // self.cart.total_price = cart.total_price
-                               // data.test.textContent = cart.total_price
-                               // data.item_counter.textContent = cart.item_count
-                   })
+                    let data = await response.json();
+                    return data;
+                   // .then(response => response.json())
+                   // .then(data => {
+                   //             // // self.cart.count = parseInt(cart.item_count);
+                   //             // // self.cart.total_price = cart.total_price
+                   //             // data.test.textContent = cart.total_price
+                   //             // data.item_counter.textContent = cart.item_count
+                   //      cart_popup.renderCart()
+                   // })
 
             },
             onProductVariantChange: function (select) {
@@ -128,7 +127,14 @@ window.onload = function () {
             })
             data.addCartBtn.addEventListener('click', function () {
                 methods.addToCart(data.variant.value, data.quantity)
+                    .then(data => {
+                        cart_popup.getCart()
+                            .then(cart => {
+                                cart_popup.renderCart(cart)
+                            })
+                    })
             })
+
         data.addCartBtn.addEventListener('click', cart_popup.setContent)
             document.querySelector(selectors.plus_btn).addEventListener('click', methods.plusQty)
             document.querySelector(selectors.minus_btn).addEventListener('click', methods.minusQty)
@@ -173,7 +179,7 @@ window.onload = function () {
 // ---------------------------------------------------------------------------
 // Money format handler
 // ---------------------------------------------------------------------------
-    Shopify.money_format = "${{amount}}";
+    Shopify.money_format = money_format;
     Shopify.formatMoney = function (cents, format) {
         if (typeof cents == 'string') {
             cents = cents.replace('.', '');

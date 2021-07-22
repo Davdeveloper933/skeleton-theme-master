@@ -24,13 +24,12 @@
     </style>
     {% assign menu = linklists.header-menu %}
     <script>
-        var template = '{{ template.name }}'
+        var money_format = '{{ shop.money_format | json }}'
     </script>
 </head>
 <body class="main__body">
 {% section 'mobile-menu' %}
 {% section 'header' %}
-
 {% section 'cart-template' %}
 {{ content_for_layout }}
 

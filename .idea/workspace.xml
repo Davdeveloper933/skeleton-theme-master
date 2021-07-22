@@ -4,6 +4,8 @@
     <list default="true" id="744733da-61b5-4f19-a2a2-9709bc35f9c8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/theme.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/theme.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/settings_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layout/theme.liquid" beforeDir="false" afterPath="$PROJECT_DIR$/layout/theme.liquid" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +36,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/sections" />
     <property name="node.js.detected.package.stylelint" value="true" />
     <property name="node.js.selected.package.stylelint" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -43,11 +45,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\istom\Desktop\skeleton-theme-master\sections" />
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master\assets" />
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master\snippets" />
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master\dist" />
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master" />
-      <recent name="C:\Users\istom\Desktop\skeleton-theme-master\assets\scss" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\istom\Desktop\skeleton-theme-master\assets" />
@@ -89,7 +91,8 @@
       <workItem from="1626684489682" duration="8713000" />
       <workItem from="1626773461754" duration="33823000" />
       <workItem from="1626861367971" duration="3517000" />
-      <workItem from="1626866501272" duration="42876000" />
+      <workItem from="1626866501272" duration="42968000" />
+      <workItem from="1626964648515" duration="8598000" />
     </task>
     <servers />
   </component>
