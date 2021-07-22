@@ -8,58 +8,80 @@
 // const addCartBtn = document.getElementById('addToCart');
 
 window.onload = function () {
+    var selectors = {
+        addToCartBtn: 'addToCart',
+        product_select: 'productSelect',
+        product_price: '.product__price__value',
+        quantity: '.product__input__field',
+        minus_btn: '.product__minus',
+        plus_btn: '.product__plus',
+        cart_item_count:".cart__items__count__value",
+        cart_test:".cart_test",
+        cart_item:".cart__item"
+    }
 
-var cart_popup = (function () {
+
     function CartPopup() {
         let self = this;
         this.selectors = {
             cart_item_count:".cart__items__count__value",
-            cart_test:".cart_test"
+            cart_test:".cart_test",
+            cart_item:".cart__item"
         }
-        this.test = document.querySelector(self.selectors.cart_test);
-        this.item_counter = document.querySelector(self.selectors.cart_item_count);
-        // this.fetchCart = fetch('/cart.js');
-        this.getCart = async function () {
-           let response = await fetch('/cart.js')
-           let data = await response.json()
-           return data;
-        }
+        this.test = document.querySelector(selectors.cart_test);
+        this.item_counter = document.querySelector(selectors.cart_item_count);
+        this.cart_item = document.querySelectorAll(selectors.cart_item);
+        // // this.fetchCart = fetch('/cart.js');
+        // this.getCart = async function () {
+        //    let response = await fetch('/cart.js');
+        //    let data = await response.json()
+        //    return data;
+        // }
+
+
 
         this.cart = {};
-        this.getCart()
-            .then(cart => {
-                self.cart.count = parseInt(cart.item_count);
-                self.cart.total_price = cart.total_price
-            })
 
-        console.log(this.cart)    //
+        this.renderCart = function (){
+            fetch('/cart.js')
+                .then(response => response.json())
+                .then(cart => {
+                    self.cart = cart
+                    self.test.textContent = self.cart.total_price;
+                    self.item_counter.textContent = self.cart.item_count;
+                })
+            console.log(self.cart)
+        }//
             this.setContent = function () {
-                self.cart.count+=1;
-                self.item_counter.textContent = self.cart.count
-                self.test.textContent = self.cart.total_price
+                // fetch('/cart.js')
+                //     .then(response => response.json())
+                //     self.getCart()
+                //     .then(cart => {
+                //         // self.cart.count = parseInt(cart.item_count);
+                //         // self.cart.total_price = cart.total_price
+                //         self.test.textContent = cart.total_price
+                //         self.item_counter.textContent = cart.item_count
+                //     })
+                // self.cart.count+=1;
+                //
+                // self.test.textContent = self.cart.total_price
             }
         }
         // console.log(this.cartData.item_count.textContent)
-        return new CartPopup()
-})()
 
     var product = (function () {
-        selectors = {
-            addToCartBtn: 'addToCart',
-            product_select: 'productSelect',
-            product_price: '.product__price__value',
-            quantity: '.product__input__field',
-            minus_btn: '.product__minus',
-            plus_btn: '.product__plus',
-            cart_item_count:".cart__items__count__value"
-        }
         var data = {};
+        var cart_popup = new CartPopup();
+
+        data.test = document.querySelector(selectors.cart_test);
+        data.item_counter = document.querySelector(selectors.cart_item_count);
+        data.cart_item = document.querySelectorAll(selectors.cart_item);
         data.quantity = document.querySelector(selectors.quantity) || data.quantity;
         data.variant = document.getElementById(selectors.product_select) || data.variant;
         data.addCartBtn = document.getElementById(selectors.addToCartBtn) || data.addCartBtn;
         methods = {
-            addToCart:async function (id, quantity) {
-               let response = await fetch('/cart/add.js', {
+            addToCart: function (id, quantity) {
+               fetch('/cart/add.js', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -73,8 +95,14 @@ var cart_popup = (function () {
                         ]
                     })
                 })
-                let data = await response.json();
-                return data;
+                   .then(response => response.json())
+                   .then(data => {
+                               // // self.cart.count = parseInt(cart.item_count);
+                               // // self.cart.total_price = cart.total_price
+                               // data.test.textContent = cart.total_price
+                               // data.item_counter.textContent = cart.item_count
+                   })
+
             },
             onProductVariantChange: function (select) {
                 // data.id = data.variant.value;
@@ -100,15 +128,8 @@ var cart_popup = (function () {
             })
             data.addCartBtn.addEventListener('click', function () {
                 methods.addToCart(data.variant.value, data.quantity)
-                    .then(cart => {
-                        cart_popup.setContent()
-                        console.log(cart)
-                    })
-
             })
-            data.addCartBtn.addEventListener('click', function () {
-
-            })
+        data.addCartBtn.addEventListener('click', cart_popup.setContent)
             document.querySelector(selectors.plus_btn).addEventListener('click', methods.plusQty)
             document.querySelector(selectors.minus_btn).addEventListener('click', methods.minusQty)
 
