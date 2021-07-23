@@ -14,12 +14,16 @@
         </span>
     </div>
         <div class="cart__content">
-            <button class="clear">CLEAR CART</button>
+            <button class="clear">CLEAR CART
+                <span>span</span>
+                <p>bpalal</p>
+            </button>
                 {% comment %}<div class='cart__deleted__item hide'>{% endcomment %}
                     {% comment %}<a href="{{ cart_item.url }}" class="cart__item__title">{{ cart_item.title }}</a>{% endcomment %}
                     {% comment %}is deleted from your cart.{% endcomment %}
                 {% comment %}</div>{% endcomment %}
-               <!--- <div class="cart__item" data-line_key="{{ cart_item.key }}">
+            <!---
+               <div class="cart__item" data-line_key="{{ cart_item.key }}">
                     <div class="cart__item__image__wrapper">
                         <img src="{{ cart_item | img_url }}" alt="{{ cart_item.image.alt | escape }}" class="cart__item__image">
                     </div>
@@ -48,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-                    --->
+                --->
 
             {% comment %}<div class="cart__cart__is__empty">{% endcomment %}
             {% comment %}Your cart is empty...{% endcomment %}

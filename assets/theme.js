@@ -67,15 +67,47 @@ window.onload = function () {
         //     self.renderItems(cart)
         //     console.log(item_price)
         // }
-            let buttons_list = document.querySelectorAll[0]('.clear')
+        //     let buttons_list = document.querySelectorAll[0]('.clear')
             console.log(document.querySelectorAll('.clear'))
         }
 
         CartPopup.prototype.renderCart = function () {
+            // this.cart_item = document.querySelectorAll(selectors.cart_item);
+
             this.getCart()
                 .then(cart => {
+                    console.log(cart)
+                    this.cart_content.innerHTML = null;
                     cart.items.forEach((item,index)=> {
-                        this.cart_item.innerHTML = item.title
+                        this.cart_content.innerHTML+= `
+                                        <div class="cart__item" >
+                <div class="cart__item__image__wrapper">
+                    <img src="${item.image}" alt="" class="cart__item__image">
+                </div>
+                <div class="cart__item__info">
+                    <a href="${item.url}" class="cart__item__title">${item.product_title} - ${item.options_with_values[0].value}</a>
+                    <h3 class="cart__item__price" data-product_price="">
+                            ${Shopify.formatMoney(item.price,Shopify.money_format)}
+                            <span class="cart__item__sale__price sale_price">
+                            
+                        </span>
+                    </h3>
+                    <div class="custom_input cart__item__custom__input">
+                        <div class="custom_input__minus cart__minus">
+                            <svg width="12" height="3" viewBox="0 0 12 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.69873 2.21891V0.643912H11.3037V2.21891H0.69873Z" fill="black"></path>
+                            </svg>
+                        </div>
+                        <input type="number" class="custom_input__field cart__input__field"  value="${item.quantity}">
+                        <div class="cart__plus custom_input__plus">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11.1701 5.09791V6.96691H6.9281V11.2089H5.0801V6.96691H0.838102V5.09791H5.0801V0.855911H6.9281V5.09791H11.1701Z" fill="black"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        `;
                     })
                 })
         }
@@ -88,6 +120,7 @@ window.onload = function () {
         data.cart_item = document.querySelectorAll(selectors.cart_item);
         data.quantity = document.querySelector(selectors.quantity) || data.quantity;
         data.variant = document.getElementById(selectors.product_select) || data.variant;
+        data.id = data.variant.value;
         data.addCartBtn = document.getElementById(selectors.addToCartBtn) || data.addCartBtn;
         var addCartFetch = fetch('/cart/add.js', {
             method: 'POST',
@@ -97,7 +130,7 @@ window.onload = function () {
             body: JSON.stringify({
                 'items': [
                     {
-                        'id': data.variant.value,
+                        'id': data.id,
                         'quantity': parseInt(data.quantity.value)
                     }
                 ]
@@ -132,7 +165,7 @@ window.onload = function () {
                     body: JSON.stringify({
                         'items': [
                             {
-                                'id': data.variant.value,
+                                'id': data.id,
                                 'quantity': parseInt(data.quantity.value)
                             }
                         ]
@@ -164,7 +197,7 @@ window.onload = function () {
             //
             // },
             onProductVariantChange: function (select) {
-                // data.id = data.variant.value;
+                data.id = data.variant.options[data.variant.selectedIndex].value;
                 document.querySelector(selectors.product_price).textContent =
                     select.options[select.selectedIndex].dataset.variant_price;
             },
@@ -178,7 +211,6 @@ window.onload = function () {
             plusQty: function () {
                 let qty = parseInt(data.quantity.value)
                 qty += 1
-                // console.log(quantity)
                 document.querySelector(selectors.quantity).value = qty
             }
         }
