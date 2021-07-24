@@ -183,7 +183,7 @@ button {
   width: fit-content; }
 
 .hide {
-  display: none; }
+  display: none !important; }
 
 .mobile__menu__icon {
   display: none; }
@@ -508,7 +508,7 @@ button {
   position: relative; }
 
 .cart__deleted__item {
-  display: none;
+  /*display: none;*/
   padding: 0 18px 20px 18px; }
   .cart__deleted__item .cart__item__title {
     margin-bottom: 8px; }

@@ -29,16 +29,31 @@ window.onload = function () {
             cart_content:'.cart__content',
             cart_minus:'.cart__minus',
             cart_plus:".cart__plus",
-            cart_item_quantity:'.cart__input__field'
+            cart_item_quantity:'.cart__input__field',
+            cart_subtotal:'.cart__subtotal__number',
+            cart_deleted_item:'.cart__deleted__item'
         }
         this.item_counter = document.querySelector(this.selectors.cart_item_count);
-        this.cart_item = document.querySelector(this.selectors.cart_item);
+        this.cart_item = document.querySelectorAll(this.selectors.cart_item);
         this.cart_item_price = document.querySelector(this.selectors.cart_item_price);
         this.cart_content = document.querySelector(this.selectors.cart_content);
         this.plusBtn = document.querySelectorAll(this.selectors.cart_plus);
         this.minusBtn = document.querySelectorAll(this.selectors.cart_minus);
         this.cart_item_qty = document.querySelectorAll(this.selectors.cart_item_quantity);
+        this.cart_subtotal = document.querySelector(this.selectors.cart_subtotal);
+        this.deleted_item = document.querySelectorAll(this.selectors.cart_deleted_item);
         this.compare_at_price = null;
+        this.setElements = function () {
+            this.item_counter = document.querySelector(this.selectors.cart_item_count);
+            this.cart_item = document.querySelectorAll(this.selectors.cart_item);
+            this.cart_item_price = document.querySelector(this.selectors.cart_item_price);
+            this.cart_content = document.querySelector(this.selectors.cart_content);
+            this.plusBtn = document.querySelectorAll(this.selectors.cart_plus);
+            this.minusBtn = document.querySelectorAll(this.selectors.cart_minus);
+            this.cart_item_qty = document.querySelectorAll(this.selectors.cart_item_quantity);
+            this.cart_subtotal = document.querySelector(this.selectors.cart_subtotal);
+            this.deleted_item = document.querySelectorAll(this.selectors.cart_deleted_item);
+        }
 
         this.methods = {
             minusQty: function (index) {
@@ -46,6 +61,10 @@ window.onload = function () {
                 if (qty > 1) {
                     qty -= 1;
                     self.cart_item_qty[index].value = qty
+                }else {
+                    qty -= 1;
+                    self.cart_item_qty[index].value = qty;
+                    self.showRemovedItemNotification(index);
                 }
             },
             plusQty: function (index) {
@@ -70,6 +89,13 @@ window.onload = function () {
                self.cart = cart;
             })
 
+        this.showRemovedItemNotification = function (index) {
+            this.setElements();
+            // this.deleted_item = document.querySelectorAll(this.selectors.cart_deleted_item);
+            this.deleted_item[index].classList.remove('hide');
+            this.cart_item[index].classList.add('hide')
+        }
+
             this.setEventHandlers = function (items) {
                 this.plusBtn = document.querySelectorAll(this.selectors.cart_plus);
                 this.minusBtn = document.querySelectorAll(this.selectors.cart_minus);
@@ -86,6 +112,15 @@ window.onload = function () {
                     });
                     console.log(this.minusBtn[index])
                 })
+            }
+
+            this.updateCartDetails = function (cart) {
+                this.item_counter.textContent = cart.item_count;
+                this.cart_subtotal.textContent = Shopify.formatMoney(cart.items_subtotal_price,Shopify.money_format);
+            }
+
+            this.deleteCartItem = function (index) {
+
             }
         }
 
@@ -104,7 +139,10 @@ window.onload = function () {
                             'id': item.key,
                             'quantity': quantity
                         })
-            })
+            }).then(response => response.json())
+                .then(cart => {
+                    this.updateCartDetails(cart)
+                })
         }
 
         CartPopup.prototype.renderCart = function (product) {
@@ -116,10 +154,14 @@ window.onload = function () {
             this.getCart()
                 .then(cart => {
                     console.log(cart.items)
+                    this.updateCartDetails(cart);
                     this.cart_content.innerHTML = null;
                     cart.items.forEach((item,index)=> {
                         this.cart_content.innerHTML+= `
-                                        <div class="cart__item" data-index="${index}">
+                      <div class='cart__deleted__item hide'>
+                   <a href="${item.url}" class="cart__item__title">${item.product_title} - ${item.options_with_values[0].value}</a>
+                        is deleted from your cart.</div>
+                   <div class="cart__item" data-index="${index}">
                 <div class="cart__item__image__wrapper">
                     <img src="${item.image}" alt="" class="cart__item__image">
                 </div>
@@ -202,7 +244,7 @@ window.onload = function () {
                 })
                  .then(response => response.json())
                  .then(data => {
-                     cart_popup.renderCart(data)
+                     cart_popup.renderCart(data);
                  })
             },
             // addCart: function (onsuccess,onerror) {
