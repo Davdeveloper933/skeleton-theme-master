@@ -24,7 +24,10 @@
     </style>
     {% assign menu = linklists.header-menu %}
     <script>
-        var money_format = '{{ shop.money_format }}'
+        var theme = {} || theme
+        theme.product = {};
+        var money_format = '{{ shop.money_format }}';
+        theme.product.compare_at_price = '{{ product.compare_at_price }}';
     </script>
 </head>
 <body class="main__body">

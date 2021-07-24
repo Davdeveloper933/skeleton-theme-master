@@ -7,6 +7,7 @@
 // const item_count_num = document.querySelector('.item__count__val');
 // const addCartBtn = document.getElementById('addToCart');
 
+
 window.onload = function () {
     var selectors = {
         addToCartBtn: 'addToCart',
@@ -18,24 +19,39 @@ window.onload = function () {
         cart_item_count:".cart__items__count__value",
         cart_item:".cart__item",
         cart_item_price:".cart__item__price",
-        cart_content:'.cart__content'
+        cart_content:'.cart__content',
+        cart_minus:'.cart__minus',
+        cart_plus:".cart__plus",
+        cart_item_quantity:'.cart__input__field'
     }
 
 
     function CartPopup() {
         let self = this;
-        // this.selectors = {
-        //     cart_item_count:".cart__items__count__value",
-        //     cart_test:".cart_test",
-        //     cart_item:".cart__item"
-        // }
         this.test = document.querySelector(selectors.cart_test);
         this.item_counter = document.querySelector(selectors.cart_item_count);
         this.cart_item = document.querySelector(selectors.cart_item);
         this.cart_item_price = document.querySelector(selectors.cart_item_price);
         this.cart_content = document.querySelector(selectors.cart_content);
-        // // this.fetchCart = fetch('/cart.js');
-        self.cart = {};
+        this.plusBtn = document.querySelectorAll(selectors.cart_plus);
+        this.minusBtn = document.querySelectorAll(selectors.cart_minus);
+        this.cart_item_qty = document.querySelectorAll(selectors.cart_item_quantity);
+        this.compare_at_price = null;
+
+        this.methods = {
+            minusQty: function () {
+                let qty = parseInt(self.cart_item_qty[0].value)
+                if (qty > 1) {
+                    qty -= 1;
+                    self.cart_item_qty[0].value = qty
+                }
+            },
+            plusQty: function () {
+                let qty = parseInt(self.cart_item_qty[0].value)
+                qty += 1;
+                self.cart_item_qty[0].value = qty
+            }
+        }
         this.getCart = async function () {
            let response = await fetch('/cart.js');
            let data = await response.json()
@@ -51,6 +67,14 @@ window.onload = function () {
             .then(cart => {
                self.cart = cart;
             })
+        this.setEventHandlers = function () {
+            this.plusBtn = document.querySelector(selectors.cart_plus);
+            this.minusBtn = document.querySelector(selectors.cart_minus);
+            this.cart_item_qty = document.querySelector(selectors.cart_item_quantity);
+            console.log(this.plusBtn,this.plusBtn[0])
+            this.plusBtn[0].addEventListener('click',this.methods.plusQty);
+            this.minusBtn[0].addEventListener('click',this.methods.minusQty)
+        }
 
         //
         // this.renderItems:function (cart) {
@@ -58,6 +82,7 @@ window.onload = function () {
         //         self.cart_item_price.textContent = item.price;
         //     })
         // }
+
 
         // this.renderCart: function (cart){
         //     let item_price = cart.items[cart.items.length-1].price;
@@ -71,16 +96,21 @@ window.onload = function () {
             console.log(document.querySelectorAll('.clear'))
         }
 
-        CartPopup.prototype.renderCart = function () {
+        CartPopup.prototype.renderCart = function (product) {
             // this.cart_item = document.querySelectorAll(selectors.cart_item);
-
+            this.compare_at_price = product.items[0].properties.compare_at_price?
+                parseFloat(product.items[0].properties.compare_at_price):'';
+            this.formatted_compare_price = this.compare_at_price?
+                Shopify.formatMoney(this.compare_at_price,Shopify.money_format):'';
             this.getCart()
                 .then(cart => {
-                    console.log(cart)
+
                     this.cart_content.innerHTML = null;
                     cart.items.forEach((item,index)=> {
+                        console.log(index+='')
+
                         this.cart_content.innerHTML+= `
-                                        <div class="cart__item" >
+                                        <div class="cart__item" data-index="${index}">
                 <div class="cart__item__image__wrapper">
                     <img src="${item.image}" alt="" class="cart__item__image">
                 </div>
@@ -89,7 +119,7 @@ window.onload = function () {
                     <h3 class="cart__item__price" data-product_price="">
                             ${Shopify.formatMoney(item.price,Shopify.money_format)}
                             <span class="cart__item__sale__price sale_price">
-                            
+                                ${this.formatted_compare_price}
                         </span>
                     </h3>
                     <div class="custom_input cart__item__custom__input">
@@ -99,7 +129,7 @@ window.onload = function () {
                             </svg>
                         </div>
                         <input type="number" class="custom_input__field cart__input__field"  value="${item.quantity}">
-                        <div class="cart__plus custom_input__plus">
+                        <div class="cart__plus custom_input__plus" >
                             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M11.1701 5.09791V6.96691H6.9281V11.2089H5.0801V6.96691H0.838102V5.09791H5.0801V0.855911H6.9281V5.09791H11.1701Z" fill="black"></path>
                             </svg>
@@ -109,33 +139,20 @@ window.onload = function () {
             </div>
                         `;
                     })
+                    // this.setEventHandlers()
                 })
         }
-
 
     var product = (function () {
         var data = {};
         var cart_popup = new CartPopup();
         data.item_counter = document.querySelector(selectors.cart_item_count);
-        data.cart_item = document.querySelectorAll(selectors.cart_item);
         data.quantity = document.querySelector(selectors.quantity) || data.quantity;
         data.variant = document.getElementById(selectors.product_select) || data.variant;
         data.id = data.variant.value;
         data.addCartBtn = document.getElementById(selectors.addToCartBtn) || data.addCartBtn;
-        var addCartFetch = fetch('/cart/add.js', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'items': [
-                    {
-                        'id': data.id,
-                        'quantity': parseInt(data.quantity.value)
-                    }
-                ]
-            })
-        })
+        data.compare_at_price = theme.product.compare_at_price;
+        console.log(data.id)
 
         methods = {
             clearCart:function () {
@@ -157,7 +174,7 @@ window.onload = function () {
                 })
             },
             addProduct:function () {
-                fetch('/cart/add.js', {
+             fetch('/cart/add.js', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -166,22 +183,29 @@ window.onload = function () {
                         'items': [
                             {
                                 'id': data.id,
-                                'quantity': parseInt(data.quantity.value)
+                                'quantity': parseInt(data.quantity.value),
+                                properties: {
+                                    'compare_at_price':data.compare_at_price
+                                }
                             }
                         ]
                     })
                 })
+                 .then(response => response.json())
+                 .then(data => {
+                     console.log(data)
+                     cart_popup.renderCart(data)
+                 })
             },
-            addCart: function (onsuccess,onerror) {
-                addCartFetch.then(onsuccess,onerror)
-            },
-            onSuccess:function (data) {
-               methods.addProduct()
-               cart_popup.renderCart()
-            },
-            onError:function (error) {
-                return error
-            },
+            // addCart: function (onsuccess,onerror) {
+            //     addCartFetch.then(onsuccess,onerror)
+            // },
+            // onSuccess:function (data) {
+            //    cart_popup.renderCart()
+            // },
+            // onError:function (error) {
+            //     return error
+            // },
             // addToCart:async function (id, quantity) {
             //   let response = await
             //         let data = await response.json();
@@ -197,7 +221,8 @@ window.onload = function () {
             //
             // },
             onProductVariantChange: function (select) {
-                data.id = data.variant.options[data.variant.selectedIndex].value;
+                data.id = data.variant.value;
+                console.log(data.id);
                 document.querySelector(selectors.product_price).textContent =
                     select.options[select.selectedIndex].dataset.variant_price;
             },
@@ -232,11 +257,15 @@ window.onload = function () {
                 //     .then(cart => {
                 //         cart_popup.renderCart(cart)
                 //     })
-                methods.addCart(methods.onSuccess,methods.onError)
+                console.log(data.id);
+                methods.addProduct()
             })
-        data.addCartBtn.addEventListener('click', cart_popup.setContent)
-            document.querySelector(selectors.plus_btn).addEventListener('click', methods.plusQty)
-            document.querySelector(selectors.minus_btn).addEventListener('click', methods.minusQty)
+            document.querySelector(selectors.plus_btn).addEventListener('click',function (){
+                methods.plusQty()
+            })
+            document.querySelector(selectors.minus_btn).addEventListener('click',function () {
+                methods.minusQty()
+            })
     })()
 // mobMenuIcon.addEventListener('click',() => {
 //     mobileMenu.classList.remove('closed');
