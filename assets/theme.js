@@ -9,47 +9,49 @@
 
 
 window.onload = function () {
+    var cart_popup = new CartPopup();
     var selectors = {
         addToCartBtn: 'addToCart',
         product_select: 'productSelect',
         product_price: '.product__price__value',
         quantity: '.product__input__field',
         minus_btn: '.product__minus',
-        plus_btn: '.product__plus',
-        cart_item_count:".cart__items__count__value",
-        cart_item:".cart__item",
-        cart_item_price:".cart__item__price",
-        cart_content:'.cart__content',
-        cart_minus:'.cart__minus',
-        cart_plus:".cart__plus",
-        cart_item_quantity:'.cart__input__field'
+        plus_btn: '.product__plus'
     }
 
 
     function CartPopup() {
         let self = this;
-        this.test = document.querySelector(selectors.cart_test);
-        this.item_counter = document.querySelector(selectors.cart_item_count);
-        this.cart_item = document.querySelector(selectors.cart_item);
-        this.cart_item_price = document.querySelector(selectors.cart_item_price);
-        this.cart_content = document.querySelector(selectors.cart_content);
-        this.plusBtn = document.querySelectorAll(selectors.cart_plus);
-        this.minusBtn = document.querySelectorAll(selectors.cart_minus);
-        this.cart_item_qty = document.querySelectorAll(selectors.cart_item_quantity);
+        this.selectors = {
+            cart_item_count:".cart__items__count__value",
+            cart_item:".cart__item",
+            cart_item_price:".cart__item__price",
+            cart_content:'.cart__content',
+            cart_minus:'.cart__minus',
+            cart_plus:".cart__plus",
+            cart_item_quantity:'.cart__input__field'
+        }
+        this.item_counter = document.querySelector(this.selectors.cart_item_count);
+        this.cart_item = document.querySelector(this.selectors.cart_item);
+        this.cart_item_price = document.querySelector(this.selectors.cart_item_price);
+        this.cart_content = document.querySelector(this.selectors.cart_content);
+        this.plusBtn = document.querySelectorAll(this.selectors.cart_plus);
+        this.minusBtn = document.querySelectorAll(this.selectors.cart_minus);
+        this.cart_item_qty = document.querySelectorAll(this.selectors.cart_item_quantity);
         this.compare_at_price = null;
 
         this.methods = {
-            minusQty: function () {
-                let qty = parseInt(self.cart_item_qty[0].value)
+            minusQty: function (index) {
+                let qty = parseInt(self.cart_item_qty[index].value)
                 if (qty > 1) {
                     qty -= 1;
-                    self.cart_item_qty[0].value = qty
+                    self.cart_item_qty[index].value = qty
                 }
             },
-            plusQty: function () {
-                let qty = parseInt(self.cart_item_qty[0].value)
+            plusQty: function (index) {
+                let qty = parseInt(self.cart_item_qty[index].value)
                 qty += 1;
-                self.cart_item_qty[0].value = qty
+                self.cart_item_qty[index].value = qty
             }
         }
         this.getCart = async function () {
@@ -67,33 +69,42 @@ window.onload = function () {
             .then(cart => {
                self.cart = cart;
             })
-        this.setEventHandlers = function () {
-            this.plusBtn = document.querySelector(selectors.cart_plus);
-            this.minusBtn = document.querySelector(selectors.cart_minus);
-            this.cart_item_qty = document.querySelector(selectors.cart_item_quantity);
-            console.log(this.plusBtn,this.plusBtn[0])
-            this.plusBtn[0].addEventListener('click',this.methods.plusQty);
-            this.minusBtn[0].addEventListener('click',this.methods.minusQty)
+
+            this.setEventHandlers = function (items) {
+                this.plusBtn = document.querySelectorAll(this.selectors.cart_plus);
+                this.minusBtn = document.querySelectorAll(this.selectors.cart_minus);
+                this.cart_item_qty = document.querySelectorAll(this.selectors.cart_item_quantity);
+                items.forEach((item,index) => {
+                    this.plusBtn[index].addEventListener('click',function () {
+                        self.methods.plusQty(index);
+                        self.changeCart(item,index);
+                        console.log(item.key)
+                    });
+                    this.minusBtn[index].addEventListener('click',function () {
+                        self.methods.minusQty(index);
+                        self.changeCart(item,index);
+                    });
+                    console.log(this.minusBtn[index])
+                })
+            }
         }
 
-        //
-        // this.renderItems:function (cart) {
-        //     cart.items.forEach((item,index) => {
-        //         self.cart_item_price.textContent = item.price;
-        //     })
-        // }
 
 
-        // this.renderCart: function (cart){
-        //     let item_price = cart.items[cart.items.length-1].price;
-        //     let price = Shopify.formatMoney(item_price,Shopify.money_format);
-        //     self.test.textContent = cart.total_price;
-        //     self.item_counter.textContent = cart.item_count;
-        //     self.renderItems(cart)
-        //     console.log(item_price)
-        // }
-        //     let buttons_list = document.querySelectorAll[0]('.clear')
-            console.log(document.querySelectorAll('.clear'))
+        CartPopup.prototype.changeCart = function (item,index) {
+            let quantity = parseInt(this.cart_item_qty[index].value);
+            console.log(quantity)
+            fetch('/cart/change.js', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                        {
+                            'id': item.key,
+                            'quantity': quantity
+                        })
+            })
         }
 
         CartPopup.prototype.renderCart = function (product) {
@@ -104,11 +115,9 @@ window.onload = function () {
                 Shopify.formatMoney(this.compare_at_price,Shopify.money_format):'';
             this.getCart()
                 .then(cart => {
-
+                    console.log(cart.items)
                     this.cart_content.innerHTML = null;
                     cart.items.forEach((item,index)=> {
-                        console.log(index+='')
-
                         this.cart_content.innerHTML+= `
                                         <div class="cart__item" data-index="${index}">
                 <div class="cart__item__image__wrapper">
@@ -138,21 +147,21 @@ window.onload = function () {
                 </div>
             </div>
                         `;
+
                     })
-                    // this.setEventHandlers()
+                    this.setEventHandlers(cart.items)
                 })
         }
 
     var product = (function () {
         var data = {};
-        var cart_popup = new CartPopup();
+
         data.item_counter = document.querySelector(selectors.cart_item_count);
         data.quantity = document.querySelector(selectors.quantity) || data.quantity;
         data.variant = document.getElementById(selectors.product_select) || data.variant;
         data.id = data.variant.value;
         data.addCartBtn = document.getElementById(selectors.addToCartBtn) || data.addCartBtn;
         data.compare_at_price = theme.product.compare_at_price;
-        console.log(data.id)
 
         methods = {
             clearCart:function () {
@@ -193,7 +202,6 @@ window.onload = function () {
                 })
                  .then(response => response.json())
                  .then(data => {
-                     console.log(data)
                      cart_popup.renderCart(data)
                  })
             },
@@ -222,7 +230,6 @@ window.onload = function () {
             // },
             onProductVariantChange: function (select) {
                 data.id = data.variant.value;
-                console.log(data.id);
                 document.querySelector(selectors.product_price).textContent =
                     select.options[select.selectedIndex].dataset.variant_price;
             },
@@ -257,7 +264,6 @@ window.onload = function () {
                 //     .then(cart => {
                 //         cart_popup.renderCart(cart)
                 //     })
-                console.log(data.id);
                 methods.addProduct()
             })
             document.querySelector(selectors.plus_btn).addEventListener('click',function (){
